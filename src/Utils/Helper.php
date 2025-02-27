@@ -3,14 +3,11 @@
 namespace AlibabaCloud\Credentials\Utils;
 
 use AlibabaCloud\Credentials\Credential;
+use AlibabaCloud\Credentials\Configure\Config;
 use org\bovigo\vfs\vfsStream;
 use Closure;
 
-/**
- * Class Helper
- *
- * @package AlibabaCloud\Credentials\Utils
- */
+
 class Helper
 {
     /**
@@ -232,7 +229,7 @@ class Helper
      */
     public static function getUserAgent()
     {
-        return sprintf('AlibabaCloud (%s; %s) PHP/%s Credentials/%s TeaDSL/1', PHP_OS, \PHP_SAPI, PHP_VERSION, Credential::VERSION);
+        return sprintf(Config::KEY . ' (%s; %s) PHP/%s Credentials/%s TeaDSL/1', PHP_OS, \PHP_SAPI, PHP_VERSION, Credential::VERSION);
     }
 
     /**
@@ -247,5 +244,39 @@ class Helper
             return $arrays[$key];
         }
         return null;
+    }
+
+    /**
+     * Convert a string(utf8) to bytes.
+     *
+     * @param string $string
+     *
+     * @return array the return bytes
+     */
+    public static function toBytes($string)
+    {
+        $bytes = [];
+        for ($i = 0; $i < \strlen($string); ++$i) {
+            $bytes[] = \ord($string[$i]);
+        }
+
+        return $bytes;
+    }
+
+    /**
+     * Convert a bytes to string(utf8).
+     *
+     * @param array $bytes
+     *
+     * @return string the return string
+     */
+    public static function toString($bytes)
+    {
+        $str = '';
+        foreach ($bytes as $ch) {
+            $str .= \chr($ch);
+        }
+
+        return $str;
     }
 }
